@@ -1,0 +1,5 @@
+{
+	"argv": ["/dev/CSharpDim/CSharpDim/bin/Debug/CSharpDim.exe", "{connection_file}"],
+	"display_name": "C#dim",
+	"language": "csharp"
+}
