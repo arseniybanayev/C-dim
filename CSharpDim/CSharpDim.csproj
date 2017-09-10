@@ -140,8 +140,7 @@
     <Compile Include="ConnectionInformation.cs" />
     <Compile Include="Kernel\CompleteRequestHandler.cs" />
     <Compile Include="Kernel\ExecuteRequestHandler.cs" />
-    <Compile Include="Kernel\ExecutionResult.cs" />
-    <Compile Include="Kernel\InteractiveShell.cs" />
+    <Compile Include="InteractiveShell.cs" />
     <Compile Include="Kernel\IShellMessageHandler.cs" />
     <Compile Include="Kernel\KernelInfoRequestHandler.cs" />
     <Compile Include="Messages\CompleteReply.cs" />
