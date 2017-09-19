@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 
-namespace CSharpDim {
+namespace CSharpDim
+{
 	/// <summary>
 	/// http://jupyter-client.readthedocs.io/en/latest/kernels.html#connection-files
 	/// </summary>
-	public class ConnectionInformation {
+	public class ConnectionInformation
+	{
 		private string GetAddress(int port) => $"{Transport}://{IpAddress}:{port}";
 
 		[JsonProperty("stdin_port")]

@@ -3,8 +3,10 @@ using CSharpDim.Kernel;
 using CSharpDim.Util;
 using NetMQ;
 
-namespace CSharpDim.Messages {
-	public static class MessageSender {
+namespace CSharpDim.Messages
+{
+	public static class MessageSender
+	{
 		private static SignatureValidator _signatureValidator;
 
 		public static void Initialize(SignatureValidator signatureValidator) {
@@ -14,7 +16,7 @@ namespace CSharpDim.Messages {
 		public static bool Send(Message message, NetMQSocket socket) {
 			if (_signatureValidator == null)
 				throw new InvalidOperationException($"{nameof(MessageSender)} has not been initialized with a {nameof(SignatureValidator)}");
-			
+
 			var hmac = _signatureValidator.CreateSignature(message);
 
 			if (message.Identifiers.Count > 0) {
@@ -24,8 +26,7 @@ namespace CSharpDim.Messages {
 				foreach (var ident in message.Identifiers) {
 					socket.TrySendFrame(ident, true);
 				}
-			}
-			else {
+			} else {
 				// This is just a normal message so send the UUID
 				Send(message.UUID, socket);
 			}
@@ -34,7 +35,7 @@ namespace CSharpDim.Messages {
 			Send(hmac, socket);
 			Send(JsonSerializer.Serialize(message.Header), socket);
 			Send(JsonSerializer.Serialize(message.ParentHeader), socket);
-			Send(JsonSerializer.Serialize(message.MetaData), socket);
+			Send(JsonSerializer.Serialize(message.Metadata), socket);
 			Send(message.Content, socket, false);
 
 			return true;

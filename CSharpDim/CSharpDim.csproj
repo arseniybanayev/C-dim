@@ -138,24 +138,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionInformation.cs" />
-    <Compile Include="Kernel\CompleteRequestHandler.cs" />
-    <Compile Include="Kernel\ExecuteRequestHandler.cs" />
+    <Compile Include="Introspection\InspectReply.cs" />
+    <Compile Include="Introspection\InspectRequest.cs" />
+    <Compile Include="Introspection\InspectRequestHandler.cs" />
+    <Compile Include="Completion\CompleteRequestHandler.cs" />
+    <Compile Include="Execution\ExecuteRequestHandler.cs" />
     <Compile Include="InteractiveShell.cs" />
     <Compile Include="Kernel\IShellMessageHandler.cs" />
-    <Compile Include="Kernel\KernelInfoRequestHandler.cs" />
-    <Compile Include="Messages\CompleteReply.cs" />
-    <Compile Include="Messages\CompleteRequest.cs" />
+    <Compile Include="Information\KernelInfoRequestHandler.cs" />
+    <Compile Include="Completion\CompleteReply.cs" />
+    <Compile Include="Completion\CompleteRequest.cs" />
     <Compile Include="Messages\DisplayData.cs" />
-    <Compile Include="Messages\ExecuteInput.cs" />
-    <Compile Include="Messages\ExecuteReply.cs" />
-    <Compile Include="Messages\ExecuteRequest.cs" />
+    <Compile Include="Execution\ExecuteReply.cs" />
+    <Compile Include="Execution\ExecuteRequest.cs" />
     <Compile Include="Messages\ExecutionStateValues.cs" />
     <Compile Include="Messages\Header.cs" />
-    <Compile Include="Messages\KernelInfoReply.cs" />
-    <Compile Include="Messages\KernelInfoRequest.cs" />
+    <Compile Include="Information\KernelInfoReply.cs" />
+    <Compile Include="Information\KernelInfoRequest.cs" />
     <Compile Include="Messages\MessageBuilder.cs" />
     <Compile Include="Messages\MessageSender.cs" />
     <Compile Include="Messages\MessageTypeValues.cs" />
+    <Compile Include="Messages\Reply.cs" />
     <Compile Include="Messages\Status.cs" />
     <Compile Include="Messages\StatusValues.cs" />
     <Compile Include="Util\Constants.cs" />

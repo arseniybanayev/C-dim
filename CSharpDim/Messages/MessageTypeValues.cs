@@ -1,5 +1,7 @@
-﻿namespace CSharpDim.Messages {
-	public class MessageTypeValues {
+﻿namespace CSharpDim.Messages
+{
+	public class MessageTypeValues
+	{
 		public const string ExecuteRequest = "execute_request";
 
 		public const string ExecuteReply = "execute_reply";

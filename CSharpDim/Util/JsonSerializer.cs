@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 
-namespace CSharpDim.Util {
-	public static class JsonSerializer {
+namespace CSharpDim.Util
+{
+	public static class JsonSerializer
+	{
 		public static T Deserialize<T>(string value) {
 			return JsonConvert.DeserializeObject<T>(value);
 		}

@@ -1,51 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web;
+using CSharpDim.Kernel;
 using CSharpDim.Messages;
 using CSharpDim.Util;
-using Microsoft.CodeAnalysis.Scripting;
 using NetMQ.Sockets;
 
-namespace CSharpDim.Kernel {
-	public class ExecuteRequestHandler : IShellMessageHandler {
-		public ExecuteRequestHandler() { }
-
+namespace CSharpDim.Execution
+{
+	internal class ExecuteRequestHandler : IShellMessageHandler
+	{
 		private int _executionCount = 1;
 
-		private static ScriptState<object> _state = null;
-
-		public void HandleMessage(Message message, RouterSocket serverSocket, PublisherSocket ioPub) {
-			Log.Info($"Message Content {message.Content}");
+		public void HandleMessage(Message message, RouterSocket shellSocket, PublisherSocket ioPubSocket) {
 			var executeRequest = JsonSerializer.Deserialize<ExecuteRequest>(message.Content);
 
 			Log.Info($"Execute Request received with code {executeRequest.Code}");
 
-			// 1: Send Busy status on IOPub
-			SendMessageToIoPub(message, ioPub, StatusValues.Busy);
+			// Kernel sends a "status: busy" message on IOPub
+			SendMessageToIoPub(message, ioPubSocket, StatusValues.Busy);
 
-			// 2: Send execute input on IOPub
-			SendInputMessageToIoPub(message, ioPub, executeRequest.Code);
+			// Kernel 
+			SendInputMessageToIoPub(message, ioPubSocket, executeRequest.Code);
 
 			// 3: Evaluate the C# code
 			var result = InteractiveShell.ExecuteCode(executeRequest.Code);
 
-			var displayData = new DisplayData {
-				Data = new Dictionary<string, object> {
-					{"text/plain", result.Item1},
-					{"text/html", $"<font style=\"color:{result.Item2}\">{HttpUtility.HtmlEncode(result.Item1)}</font>"}
-				}
-			};
-			
 			// 4: Send execute reply to shell socket
-			SendExecuteReplyMessage(message, serverSocket);
+			SendExecuteReplyMessage(message, shellSocket);
 
 			// 5: Send execute result message to IOPub
-			SendOutputMessageToIoPub(message, ioPub, displayData);
-			
+			SendOutputMessageToIoPub(message, ioPubSocket, result);
+
 			// 6: Send IDLE status message to IOPub
-			SendMessageToIoPub(message, ioPub, StatusValues.Idle);
+			SendMessageToIoPub(message, ioPubSocket, StatusValues.Idle);
 
 			_executionCount += 1;
 		}
@@ -61,7 +49,14 @@ namespace CSharpDim.Kernel {
 			Log.Info("Message Sent");
 		}
 
-		public void SendOutputMessageToIoPub(Message message, PublisherSocket ioPub, DisplayData data) {
+		public void SendOutputMessageToIoPub(Message message, PublisherSocket ioPub, (string, ConsoleColor) executionResult) {
+			var data = new DisplayData {
+				Data = new Dictionary<string, object> {
+					{"text/plain", executionResult.Item1},
+					{"text/html", $"<font style=\"color:{executionResult.Item2}\">{HttpUtility.HtmlEncode(executionResult.Item1)}</font>"}
+				}
+			};
+
 			var content = new Dictionary<string, object>();
 			content.Add("execution_count", _executionCount);
 			content.Add("data", data.Data);
@@ -87,11 +82,7 @@ namespace CSharpDim.Kernel {
 		}
 
 		public void SendExecuteReplyMessage(Message message, RouterSocket shellSocket) {
-			var executeReply = new ExecuteReplyOk {
-				ExecutionCount = _executionCount,
-				Payload = new List<Dictionary<string, string>>(),
-				UserExpressions = new Dictionary<string, string>()
-			};
+			var executeReply = new ExecuteReply(_executionCount);
 
 			var executeReplyMessage = MessageBuilder.CreateMessage(MessageTypeValues.ExecuteReply,
 				JsonSerializer.Serialize(executeReply), message.Header);

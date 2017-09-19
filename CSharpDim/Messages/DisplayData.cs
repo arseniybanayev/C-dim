@@ -1,9 +1,10 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace CSharpDim.Messages {
-	public class DisplayData {
+namespace CSharpDim.Messages
+{
+	public class DisplayData
+	{
 		public DisplayData() {
 			Source = string.Empty;
 			Data = new Dictionary<string, object>();

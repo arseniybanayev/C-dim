@@ -1,5 +1,7 @@
-﻿namespace CSharpDim.Messages {
-	public class ExecutionStateValues {
+﻿namespace CSharpDim.Messages
+{
+	public class ExecutionStateValues
+	{
 		public const string Busy = "busy";
 
 		public const string Idle = "idle";

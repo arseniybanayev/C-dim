@@ -1,8 +1,10 @@
 ﻿using System;
 using CSharpDim.Util;
 
-namespace CSharpDim.Messages {
-	public class MessageBuilder {
+namespace CSharpDim.Messages
+{
+	public class MessageBuilder
+	{
 		public static Header CreateHeader(string messageType, string session) {
 			var newHeader = new Header {
 				Username = Constants.Username,

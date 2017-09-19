@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 
-namespace CSharpDim.Messages {
-	public class KernelInfoReply {
+namespace CSharpDim.Information
+{
+	public class KernelInfoReply
+	{
 		[JsonProperty("protocol_version")]
 		public string ProtocolVersion { get; set; }
 

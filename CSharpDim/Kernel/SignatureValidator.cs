@@ -5,8 +5,10 @@ using System.Text;
 using CSharpDim.Messages;
 using CSharpDim.Util;
 
-namespace CSharpDim.Kernel {
-	public class SignatureValidator {
+namespace CSharpDim.Kernel
+{
+	public class SignatureValidator
+	{
 		private readonly HMAC _signatureGenerator;
 
 		private readonly Encoding _encoder;
@@ -71,7 +73,7 @@ namespace CSharpDim.Kernel {
 			return new List<string> {
 				JsonSerializer.Serialize(message.Header),
 				JsonSerializer.Serialize(message.ParentHeader),
-				JsonSerializer.Serialize(message.MetaData),
+				JsonSerializer.Serialize(message.Metadata),
 				message.Content
 			};
 		}

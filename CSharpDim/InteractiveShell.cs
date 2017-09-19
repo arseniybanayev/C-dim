@@ -2,8 +2,10 @@
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 
-namespace CSharpDim {
-	internal class InteractiveShell {
+namespace CSharpDim
+{
+	internal class InteractiveShell
+	{
 		private static ScriptState<object> _state;
 
 		private const ConsoleColor ReturnValueColor = ConsoleColor.Black;
@@ -22,12 +24,10 @@ namespace CSharpDim {
 				return !string.IsNullOrEmpty(_state.ReturnValue?.ToString())
 					? (_state.ReturnValue.ToString(), ConsoleColor.Black)
 					: ("Expression has been evaluated and has no value", ConsoleColor.Gray);
-			}
-			catch (CompilationErrorException e) {
-				
+			} catch (CompilationErrorException e) {
+
 				return (e.Message, ConsoleColor.Red);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				return (e.Message, ConsoleColor.DarkRed);
 			}
 		}
@@ -37,8 +37,7 @@ namespace CSharpDim {
 				if (string.Equals(commandWithoutPcts, "reset", StringComparison.InvariantCultureIgnoreCase))
 					return (ResetState(), MetaCommandColor);
 				return ($"Unrecognized command '{commandWithoutPcts}'", CompilationErrorColor);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				return (e.Message, ErrorColor);
 			}
 		}

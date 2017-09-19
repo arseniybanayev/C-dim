@@ -1,3 +1,4 @@
-﻿namespace CSharpDim.Messages {
+﻿namespace CSharpDim.Information
+{
 	public class KernelInfoRequest { }
 }

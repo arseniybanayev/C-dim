@@ -1,10 +1,13 @@
-﻿using CSharpDim.Messages;
+﻿using CSharpDim.Kernel;
+using CSharpDim.Messages;
 using CSharpDim.Util;
 using NetMQ.Sockets;
 
-namespace CSharpDim.Kernel {
-	public class KernelInfoRequestHandler : IShellMessageHandler {
-		public void HandleMessage(Message message, RouterSocket serverSocket, PublisherSocket ioPub) {
+namespace CSharpDim.Information
+{
+	public class KernelInfoRequestHandler : IShellMessageHandler
+	{
+		public void HandleMessage(Message message, RouterSocket shellSocket, PublisherSocket ioPubSocket) {
 			var kernelInfoRequest = JsonSerializer.Deserialize<KernelInfoRequest>(message.Content);
 
 			var replyMessage = new Message {
@@ -15,7 +18,7 @@ namespace CSharpDim.Kernel {
 			};
 
 			Log.Info("Sending kernel_info_reply");
-			MessageSender.Send(replyMessage, serverSocket);
+			MessageSender.Send(replyMessage, shellSocket);
 		}
 
 		private static KernelInfoReply CreateKernelInfoReply() {
@@ -24,8 +27,8 @@ namespace CSharpDim.Kernel {
 				LanguageVersion = "0.0.1",
 				IPythonVersion = "4.0.0",
 				Language = "C#",
-				Implementation = "iCsharp",
-				ImplementationVersion = "0.0.2"
+				Implementation = "C#dim",
+				ImplementationVersion = "0.1"
 			};
 
 			return kernelInfoReply;

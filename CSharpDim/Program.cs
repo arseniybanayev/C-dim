@@ -4,6 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using CSharpDim.Completion;
+using CSharpDim.Execution;
+using CSharpDim.Information;
 using CSharpDim.Kernel;
 using CSharpDim.Messages;
 using CSharpDim.Util;
@@ -12,8 +15,10 @@ using NetMQ.Sockets;
 using Newtonsoft.Json;
 using JsonSerializer = CSharpDim.Util.JsonSerializer;
 
-namespace CSharpDim {
-	public class Program {
+namespace CSharpDim
+{
+	public class Program
+	{
 		public static void Main(string[] args) {
 			if (args == null || args.Length != 1)
 				throw new ArgumentException("Expected 1 argument with zmq connection information file");
@@ -69,13 +74,11 @@ namespace CSharpDim {
 
 				Log.Info($"Received message {JsonSerializer.Serialize(message)}");
 
-				IShellMessageHandler handler;
-				if (MessageHandlers.TryGetValue(message.Header.MessageType, out handler)) {
+				if (MessageHandlers.TryGetValue(message.Header.MessageType, out IShellMessageHandler handler)) {
 					Log.Info($"Sending message to {message.Header.MessageType} handler");
 					handler.HandleMessage(message, ShellRouterSocket, ShellPublisherSocket);
 					Log.Info("Message handling complete");
-				}
-				else {
+				} else {
 					Log.Error($"No message handler found for message type {message.Header.MessageType}");
 				}
 			}
@@ -127,7 +130,7 @@ namespace CSharpDim {
 			var metadata = ShellRouterSocket.ReceiveFrameString();
 			Log.Info(metadata);
 
-			message.MetaData = JsonSerializer.Deserialize<Dictionary<string, object>>(metadata);
+			message.Metadata = JsonSerializer.Deserialize<Dictionary<string, object>>(metadata);
 
 			// Getting content
 			var content = ShellRouterSocket.ReceiveFrameString();
